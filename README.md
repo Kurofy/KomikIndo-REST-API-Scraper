@@ -1,3 +1,13 @@
+---
+title: KomikIndo REST API Scraper
+emoji: 📖
+colorFrom: indigo
+colorTo: blue
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # KomikIndo REST API Scraper
 
 A production-ready, resilient, and modular REST API scraper for [https://komikindo.ch/](https://komikindo.ch/) designed to power comic reader mobile applications (Flutter, React Native) and web frontends.
@@ -307,5 +317,20 @@ CachedNetworkImage(
   imageUrl: imagePage.proxiedImageUrl,
 )
 ```
-#   r e s t a p i  
- 
+# restapi
+
+---
+
+## 🤗 Deploying to Hugging Face Spaces
+
+1. Create a new Space on [Hugging Face Spaces](https://huggingface.co/new-space).
+2. Choose **Docker** as the Space SDK (Blank).
+3. Connect your GitHub repository or push directly to your Space:
+`ash
+git remote add space https://huggingface.co/spaces/YOUR_USERNAME/SPACE_NAME
+git push space main
+`
+4. Hugging Face Spaces will automatically build the Dockerfile and expose port 7860.
+5. Access your live API at:
+   - Direct API base URL: https://YOUR_USERNAME-SPACE_NAME.hf.space
+   - Interactive Docs: https://YOUR_USERNAME-SPACE_NAME.hf.space/docs
