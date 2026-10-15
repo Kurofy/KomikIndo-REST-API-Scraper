@@ -1,0 +1,43 @@
+# Koyeb Deployment Manifest
+name: komikindo-api
+services:
+  - name: komikindo-api
+    type: web
+    git:
+      branch: main
+    build:
+      type: docker
+      dockerfile: Dockerfile
+    ports:
+      - port: 8000
+        path: /
+        protocol: http
+    routes:
+      - path: /
+        port: 8000
+    regions:
+      - sin # Singapore region (Lowest latency to Indonesian servers & CDNs)
+    instance_type: nano
+    health_checks:
+      - http:
+          path: /
+          port: 8000
+    env:
+      - key: BASE_URL
+        value: "https://komikindo.ch"
+      - key: ENVIRONMENT
+        value: "production"
+      - key: REQUEST_TIMEOUT
+        value: "15"
+      - key: HOMEPAGE_CACHE_TTL
+        value: "600"
+      - key: LATEST_CACHE_TTL
+        value: "600"
+      - key: COMIC_DETAIL_CACHE_TTL
+        value: "1800"
+      - key: SEARCH_CACHE_TTL
+        value: "1800"
+      - key: GENRES_CACHE_TTL
+        value: "86400"
+      - key: CHAPTER_CACHE_TTL
+        value: "86400"

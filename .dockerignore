@@ -1,0 +1,14 @@
+.venv
+venv
+.env
+.git
+.gitignore
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache
+*.html
+*.log
+README.md
+test_live_api.py
