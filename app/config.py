@@ -9,7 +9,7 @@ class Settings:
     def __init__(self):
         self._base_url: str = os.getenv("BASE_URL", "https://komikindo.ch").rstrip("/")
         self.host: str = os.getenv("HOST", "0.0.0.0")
-        self.port: int = int(os.getenv("PORT", "7860"))
+        self.port: int = int(os.getenv("PORT", "10000"))
         self.environment: str = os.getenv("ENVIRONMENT", "production")
         self.default_user_agent: str = os.getenv(
             "DEFAULT_USER_AGENT",

@@ -1,13 +1,3 @@
----
-title: KomikIndo REST API Scraper
-emoji: 📖
-colorFrom: indigo
-colorTo: blue
-sdk: docker
-app_port: 7860
-pinned: false
----
-
 # KomikIndo REST API Scraper
 
 A production-ready, resilient, and modular REST API scraper for [https://komikindo.ch/](https://komikindo.ch/) designed to power comic reader mobile applications (Flutter, React Native) and web frontends.
@@ -317,20 +307,35 @@ CachedNetworkImage(
   imageUrl: imagePage.proxiedImageUrl,
 )
 ```
-# restapi
+
 
 ---
 
-## 🤗 Deploying to Hugging Face Spaces
+---
 
-1. Create a new Space on [Hugging Face Spaces](https://huggingface.co/new-space).
-2. Choose **Docker** as the Space SDK (Blank).
-3. Connect your GitHub repository or push directly to your Space:
-`ash
-git remote add space https://huggingface.co/spaces/YOUR_USERNAME/SPACE_NAME
-git push space main
-`
-4. Hugging Face Spaces will automatically build the Dockerfile and expose port 7860.
-5. Access your live API at:
-   - Direct API base URL: https://YOUR_USERNAME-SPACE_NAME.hf.space
-   - Interactive Docs: https://YOUR_USERNAME-SPACE_NAME.hf.space/docs
+## 🚀 Deploying to Render.com
+
+This repository includes a [
+ender.yaml](render.yaml) blueprint specification for 1-click deployment.
+
+### Option A: Using Render Blueprint (1-Click Setup)
+1. Go to your [Render Dashboard](https://dashboard.render.com/).
+2. Click **New +** -> **Blueprint**.
+3. Connect your repository (https://github.com/Kurofy/restapi).
+4. Render will automatically detect [
+ender.yaml](render.yaml), configure the service in the **Singapore** region, set environment variables, and trigger the build.
+5. Click **Apply**.
+
+### Option B: Manual Web Service Setup
+1. Click **New +** -> **Web Service**.
+2. Connect your GitHub repository.
+3. Configure settings:
+   - **Name**: komikindo-api
+   - **Region**: Singapore (recommended for low latency to Southeast Asia)
+   - **Environment / Runtime**: Docker
+   - **Plan**: Free
+   - **Health Check Path**: /
+4. In **Environment Variables**, add:
+   - BASE_URL = https://komikindo.ch
+   - ENVIRONMENT = production
+5. Click **Create Web Service**. Render will automatically build the container and provide your live HTTPS URL (https://komikindo-api-xxxx.onrender.com).

@@ -3,7 +3,7 @@ FROM python:3.11-slim
 # Set environment flags
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PORT=7860
+    PORT=10000
 
 # Install required system packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -11,24 +11,22 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Create non-root user required by Hugging Face Spaces (UID 1000)
-RUN useradd -m -u 1000 user
-USER user
-ENV HOME=/home/user \
-    PATH=/home/user/.local/bin:$PATH
-
-WORKDIR $HOME/app
+WORKDIR /app
 
 # Install dependencies first for optimal Docker layer caching
-COPY --chown=user requirements.txt .
+COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt
 
 # Copy application source code
-COPY --chown=user . .
+COPY app/ ./app/
 
-# Hugging Face Spaces listens on port 7860
-EXPOSE 7860
+# Render exposes and injects $PORT (default 10000)
+EXPOSE 10000
 
-# Run uvicorn on port 7860 with proxy headers enabled
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "7860", "--workers", "2", "--proxy-headers"]
+# Health check
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:${PORT}/ || exit 1
+
+# Start uvicorn dynamically bound to $PORT injected by Render
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-10000} --workers 2 --proxy-headers"]
