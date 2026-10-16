@@ -313,29 +313,36 @@ CachedNetworkImage(
 
 ---
 
-## 🚀 Deploying to Render.com
+## 🚀 Deploying to RamNaym Cloud (https://ramnaymcloud.com/)
 
-This repository includes a [
-ender.yaml](render.yaml) blueprint specification for 1-click deployment.
+RamNaym Cloud provides fast, simplified deployment for Python & FastAPI applications without complex VPS setup.
 
-### Option A: Using Render Blueprint (1-Click Setup)
-1. Go to your [Render Dashboard](https://dashboard.render.com/).
-2. Click **New +** -> **Blueprint**.
-3. Connect your repository (https://github.com/Kurofy/restapi).
-4. Render will automatically detect [
-ender.yaml](render.yaml), configure the service in the **Singapore** region, set environment variables, and trigger the build.
-5. Click **Apply**.
+### Step-by-Step Deployment:
+1. Log in to your [RamNaym Cloud Dashboard](https://ramnaymcloud.com/).
+2. Click **Create Project** / **New Service**.
+3. Select your deployment source:
+   - **GitHub**: Connect your repository (`https://github.com/Kurofy/restapi`).
+   - **ZIP Upload**: Alternatively, upload the project archive directly.
+4. Configure the Project Settings:
+   - **Runtime / Language**: `Python`
+   - **Entry File / Start Command**:
+     ```bash
+     uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 2 --proxy-headers
+     ```
+     *(Or simply `python main.py` or `uvicorn main:app --host 0.0.0.0 --port $PORT` thanks to [main.py](file:///d:/tes/api/main.py))*
+   - **Build / Install Command**: `pip install -r requirements.txt` (detected automatically)
+5. Add **Environment Variables** in the project Settings:
+   - `BASE_URL`: `https://komikindo.ch`
+   - `ENVIRONMENT`: `production`
+   - `REQUEST_TIMEOUT`: `15`
+6. Click **Deploy**. RamNaym Cloud will install the dependencies and boot your API with dynamic port binding.
 
-### Option B: Manual Web Service Setup
-1. Click **New +** -> **Web Service**.
-2. Connect your GitHub repository.
-3. Configure settings:
-   - **Name**: komikindo-api
-   - **Region**: Singapore (recommended for low latency to Southeast Asia)
-   - **Environment / Runtime**: Docker
-   - **Plan**: Free
-   - **Health Check Path**: /
-4. In **Environment Variables**, add:
-   - BASE_URL = https://komikindo.ch
-   - ENVIRONMENT = production
-5. Click **Create Web Service**. Render will automatically build the container and provide your live HTTPS URL (https://komikindo-api-xxxx.onrender.com).
+---
+
+## ☁️ Alternative: Deploying to Render.com
+
+This repository also includes a [render.yaml](file:///d:/tes/api/render.yaml) blueprint specification if you ever want to deploy on Render:
+1. Connect your GitHub repository in Render Dashboard.
+2. Select Docker or Python environment.
+3. Add the `BASE_URL=https://komikindo.ch` environment variable.
+
