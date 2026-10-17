@@ -20,6 +20,7 @@ class Settings:
         # Cache TTLs (seconds)
         self.homepage_cache_ttl: int = int(os.getenv("HOMEPAGE_CACHE_TTL", "600"))
         self.latest_cache_ttl: int = int(os.getenv("LATEST_CACHE_TTL", "600"))
+        self.popular_cache_ttl: int = int(os.getenv("POPULAR_CACHE_TTL", "600"))
         self.comic_detail_cache_ttl: int = int(os.getenv("COMIC_DETAIL_CACHE_TTL", "1800"))
         self.search_cache_ttl: int = int(os.getenv("SEARCH_CACHE_TTL", "1800"))
         self.genres_cache_ttl: int = int(os.getenv("GENRES_CACHE_TTL", "86400"))

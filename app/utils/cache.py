@@ -12,6 +12,7 @@ class CacheManager:
         # Homepage & Latest Updates: 10 minutes TTL
         self.homepage_cache = TTLCache(maxsize=100, ttl=settings.homepage_cache_ttl)
         self.latest_cache = TTLCache(maxsize=500, ttl=settings.latest_cache_ttl)
+        self.popular_cache = TTLCache(maxsize=500, ttl=settings.popular_cache_ttl)
 
         # Comic Detail & Search: 30 minutes TTL
         self.comic_detail_cache = TTLCache(maxsize=2000, ttl=settings.comic_detail_cache_ttl)
@@ -26,6 +27,7 @@ class CacheManager:
         self._registry = {
             "homepage": self.homepage_cache,
             "latest": self.latest_cache,
+            "popular": self.popular_cache,
             "comic_detail": self.comic_detail_cache,
             "search": self.search_cache,
             "genres": self.genres_cache,

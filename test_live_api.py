@@ -46,6 +46,23 @@ def run_tests():
     print(f"PASS: Latest page 1 count: {len(comics)}, has_next: {pagination['has_next_page']}")
     assert len(comics) > 0
 
+    # 3b. Test Popular Comics (Paginated)
+    print("\n[TEST 3b] GET /api/v1/popular?page=1")
+    res = client.get("/api/v1/popular?page=1")
+    assert res.status_code == 200, f"Popular failed: {res.status_code}"
+    body = res.json()
+    pop_comics = body["data"]["comics"]
+    pop_pagination = body["data"]["pagination"]
+    print(f"PASS: Popular page 1 count: {len(pop_comics)}, total_pages: {pop_pagination['total_pages']}, has_next: {pop_pagination['has_next_page']}")
+    assert len(pop_comics) > 0
+    assert pop_pagination["total_pages"] is not None and pop_pagination["total_pages"] > 1
+    print(f"Sample Popular item: {pop_comics[0]['title']} ({pop_comics[0]['comic_slug']})")
+
+    # Test cache hit on popular
+    res_cached = client.get("/api/v1/popular?page=1")
+    assert res_cached.json()["cached"] is True, "Popular cache hit failed"
+    print("PASS: In-memory TTL cache hit verified for /api/v1/popular?page=1")
+
     # 4. Test Search
     print("\n[TEST 4] GET /api/v1/search?q=solo&page=1")
     res = client.get("/api/v1/search?q=solo&page=1")

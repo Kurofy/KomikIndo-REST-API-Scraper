@@ -52,6 +52,24 @@ class ScraperService:
         return data, False
 
     @staticmethod
+    def get_popular(page: int = 1) -> Tuple[PaginatedComics, bool]:
+        base_url = get_base_url()
+        cache_key = f"popular:{base_url}:{page}"
+        cached_data, is_cached = cache_manager.get("popular", cache_key)
+        if is_cached:
+            return cached_data, True
+
+        target_url = (
+            f"{base_url}/daftar-manga/?order=popular"
+            if page <= 1
+            else f"{base_url}/daftar-manga/page/{page}/?order=popular"
+        )
+        html = http_client.get(target_url)
+        data = parse_comic_list(html, current_page=page)
+        cache_manager.set("popular", cache_key, data)
+        return data, False
+
+    @staticmethod
     def get_search(query: str, page: int = 1) -> Tuple[SearchData, bool]:
         base_url = get_base_url()
         cache_key = f"search:{base_url}:{query}:{page}"

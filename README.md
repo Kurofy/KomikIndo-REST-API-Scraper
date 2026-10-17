@@ -33,7 +33,7 @@ komikindo-api/
 │   │   └── chapter.py           # Chapter details & image pages
 │   ├── routers/                 # Modular API route controllers
 │   │   ├── __init__.py
-│   │   ├── home.py              # GET /api/v1/home & /api/v1/latest
+│   │   ├── home.py              # GET /api/v1/home, /api/v1/latest & /api/v1/popular
 │   │   ├── comic.py             # GET /api/v1/comic/{comic_slug}
 │   │   ├── chapter.py           # GET /api/v1/chapter/{chapter_slug}
 │   │   ├── search.py            # GET /api/v1/search
@@ -186,7 +186,28 @@ Returns a paginated list of comic releases.
 }
 ```
 
-### 3. Search (`GET /api/v1/search?q={query}&page={page}`)
+### 3. Popular Comics (`GET /api/v1/popular?page={page}`)
+Returns a paginated list of all-time popular comics (e.g., Solo Leveling, One Piece, Martial Peak).
+```json
+{
+  "status": "success",
+  "message": "Popular comics for page 1 retrieved successfully",
+  "base_url_used": "https://komikindo.ch",
+  "cached": false,
+  "data": {
+    "pagination": {
+      "current_page": 1,
+      "has_next_page": true,
+      "next_page": 2,
+      "prev_page": null,
+      "total_pages": 307
+    },
+    "comics": [ ... ]
+  }
+}
+```
+
+### 4. Search (`GET /api/v1/search?q={query}&page={page}`)
 Search comics by keyword with pagination.
 ```json
 {

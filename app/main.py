@@ -63,6 +63,7 @@ def root():
         "documentation": "/docs",
         "endpoints": {
             "home": "/api/v1/home",
+            "popular": "/api/v1/popular?page=1",
             "latest": "/api/v1/latest?page=1",
             "search": "/api/v1/search?q={query}&page=1",
             "genres": "/api/v1/genres",

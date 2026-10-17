@@ -4,7 +4,7 @@ from app.models.common import APIResponse
 from app.models.comic import HomeData, PaginatedComics
 from app.services.scraper import scraper_service
 
-router = APIRouter(prefix="/api/v1", tags=["Home & Latest"])
+router = APIRouter(prefix="/api/v1", tags=["Home, Latest & Popular"])
 
 
 @router.get("/home", response_model=APIResponse[HomeData])
@@ -24,6 +24,25 @@ def get_home():
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to fetch home data: {str(e)}")
+
+
+@router.get("/popular", response_model=APIResponse[PaginatedComics])
+def get_popular(page: int = Query(default=1, ge=1, description="Page number")):
+    """
+    Returns a paginated list of popular comics (e.g. Solo Leveling, One Piece, Martial Peak).
+    Cached for 10 minutes.
+    """
+    try:
+        data, cached = scraper_service.get_popular(page=page)
+        return APIResponse(
+            status="success",
+            message=f"Popular comics for page {page} retrieved successfully",
+            base_url_used=get_base_url(),
+            cached=cached,
+            data=data,
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch popular comics: {str(e)}")
 
 
 @router.get("/latest", response_model=APIResponse[PaginatedComics])
